@@ -6,8 +6,11 @@ This widget provides you with your eNom balance on your WHMCS admin dashboard. I
 * Download the latest master
 * Open the file /modules/widgets/EnomBalance.php with your editor
 * Change the configuration listed below to use your eNom logins:
+
   $enomusername = '';
+
   $enompassword = '';
+
 * Upload to your WHMCS install, if you are uploading just 'EnomBalance.php' make sure to upload it to: /WHMCS-Directory/modules/widgets/
 
 ## Links
