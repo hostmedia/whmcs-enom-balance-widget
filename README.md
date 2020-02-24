@@ -16,6 +16,7 @@ This widget provides you with your eNom balance on your WHMCS admin dashboard. I
 ## Links
 * Authors Website: https://www.hostmedia.co.uk/
 * Knowledge Base: https://www.hostmedia.co.uk/client/knowledgebase/201204250/WHMCS-eNom-Balance-Widget.html
+* WHMCS Marketplace: https://marketplace.whmcs.com/product/5292
 
 ## Preview
 ![Widget Preview](https://www.hostmedia.co.uk/resources/images/knowledgebase/whmcs-enom-balance-widget.png)
