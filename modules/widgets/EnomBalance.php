@@ -18,9 +18,8 @@ class eNomBalanceWidget extends \WHMCS\Module\AbstractWidget
     protected $description = 'Widget provides you with your eNom balance on your admin dashboard. Created by Host Media.';
     protected $weight = 150;
     protected $columns = 1;
-    protected $cache = false;
+    protected $cache = true;
     protected $cacheExpiry = 120;
-    protected $requiredPermission = '';
 
     public function getData()
     {
@@ -45,9 +44,12 @@ class eNomBalanceWidget extends \WHMCS\Module\AbstractWidget
         
         $xml = simplexml_load_string($result);
         $json = json_encode($xml);
+        $data = json_decode($json);
         
         $dataArray = array(
-            enom  => json_decode($json)
+            enom  => $data
+            , balance => $data->Balance
+            , availableBalance => $data->AvailableBalance
         );
         
         return $dataArray;
@@ -70,11 +72,11 @@ EOF;
     <div class="widget-content-padded">
         <div class="row text-center">
             <div class="col-sm-6">
-                <h4><strong>&#36;{$data['enom']->Balance}</strong></h4>
+                <h4><strong>&#36;{$data['balance']}</strong></h4>
                 Balance
             </div>
             <div class="col-sm-6">
-                <h4><strong>&#36;{$data['enom']->AvailableBalance}</strong></h4>
+                <h4><strong>&#36;{$data['availableBalance']}</strong></h4>
                 Available Balance
             </div>
         </div>
