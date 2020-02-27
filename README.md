@@ -11,6 +11,7 @@ This widget provides you with your eNom balance on your WHMCS admin dashboard. I
 
   $enompassword = '';
 
+* You can disable caching on the widget or the length of time the cache lasts using the config at the top 
 * Upload to your WHMCS install, if you are uploading just 'EnomBalance.php' make sure to upload it to: /WHMCS-Directory/modules/widgets/
 
 ## Links
