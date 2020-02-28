@@ -3,7 +3,7 @@
 /**
  * Name: WHMCS eNom Balance Widget
  * Description: This widget provides you with your eNom balance on your WHMCS admin dashboard.
- * Version 1.0
+ * Version 1.1
  * Created by Host Media Ltd
  * Website: https://www.hostmedia.co.uk/
  */
