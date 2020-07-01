@@ -39,6 +39,9 @@ class eNomBalanceWidget extends \WHMCS\Module\AbstractWidget
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $enomapiurl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // CURL Timeout (Seconds)
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         $result = curl_exec($ch);
         curl_close($ch);
         
