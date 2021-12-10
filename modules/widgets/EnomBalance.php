@@ -50,9 +50,9 @@ class eNomBalanceWidget extends \WHMCS\Module\AbstractWidget
         $data = json_decode($json);
         
         $dataArray = array(
-            enom  => $data
-            , balance => $data->Balance
-            , availableBalance => $data->AvailableBalance
+            'enom'  => $data
+            , 'balance' => $data->Balance
+            , 'availableBalance' => $data->AvailableBalance
         );
         
         return $dataArray;
