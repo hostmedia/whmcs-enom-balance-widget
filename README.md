@@ -15,8 +15,7 @@ This widget provides you with your eNom balance on your WHMCS admin dashboard. I
 * Upload to your WHMCS install, if you are uploading just 'EnomBalance.php' make sure to upload it to: /WHMCS-Directory/modules/widgets/
 
 ## WHMCS Tested Versions
-* 8.1
-* 8.0
+* 8.0 - 8.8
 * 7.10
 
 ## Links
