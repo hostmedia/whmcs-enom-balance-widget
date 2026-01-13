@@ -3,7 +3,7 @@
 /**
  * Name: WHMCS eNom Balance Widget
  * Description: This widget provides you with your eNom balance on your WHMCS admin dashboard.
- * Version 1.1.1
+ * Version 1.2.0
  * Created by Host Media Ltd
  * Website: https://www.hostmedia.co.uk/
  */
@@ -26,6 +26,10 @@ class eNomBalanceWidget extends \WHMCS\Module\AbstractWidget
         // Config
         $enomusername = 'YOUR-ENOM-USERNAME-HERE';
         $enompassword = 'YOUR-ENOM-PASSWORD-HERE';
+
+        // Timeout configuration (in seconds)
+        $connect_timeout = 5;  // Max time to establish connection
+        $request_timeout = 10; // Max total time for the request
         
         // URL
         // Live
@@ -39,20 +43,60 @@ class eNomBalanceWidget extends \WHMCS\Module\AbstractWidget
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $enomapiurl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        // CURL Timeout (Seconds)
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $connect_timeout);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $request_timeout);
+        curl_setopt($ch, CURLOPT_FAILONERROR, false);
+
         $result = curl_exec($ch);
+        $curl_error = curl_error($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        
+
+        // Handle cURL errors (timeout, connection refused, etc.)
+        if ($result === false || !empty($curl_error)) {
+            return [
+                'enom' => (object)[
+                    'ErrCount' => 1,
+                    'errors' => (object)['Err1' => 'API unavailable: ' . ($curl_error ?: 'Connection failed')]
+                ],
+                'balance' => null,
+                'availableBalance' => null,
+            ];
+        }
+
+        // Handle HTTP errors
+        if ($http_code >= 400) {
+            return [
+                'enom' => (object)[
+                    'ErrCount' => 1,
+                    'errors' => (object)['Err1' => 'API returned HTTP ' . $http_code]
+                ],
+                'balance' => null,
+                'availableBalance' => null,
+            ];
+        }
+
+        // Handle XML parsing errors
+        libxml_use_internal_errors(true);
         $xml = simplexml_load_string($result);
+        if ($xml === false) {
+            return [
+                'enom' => (object)[
+                    'ErrCount' => 1,
+                    'errors' => (object)['Err1' => 'Invalid API response (XML parse error)']
+                ],
+                'balance' => null,
+                'availableBalance' => null,
+            ];
+        }
+
         $json = json_encode($xml);
         $data = json_decode($json);
         
         $dataArray = array(
             'enom'  => $data
-            , 'balance' => $data->Balance
-            , 'availableBalance' => $data->AvailableBalance
+            , 'balance' => $data->Balance ?? null
+            , 'availableBalance' => $data->AvailableBalance ?? null
         );
         
         return $dataArray;
